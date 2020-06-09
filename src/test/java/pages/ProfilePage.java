@@ -51,6 +51,7 @@ public class ProfilePage extends AbstractPage {
                 () -> assertEquals(cfg.contactType2(), driver.findElement(contactType(1)).getText()),
                 () -> assertEquals(cfg.contactData2(), driver.findElement(contactData(1)).getAttribute("value"))
                 );
+        logger.info("all data is OK!!!");
     }
 
     //fill blocks
@@ -85,6 +86,7 @@ public class ProfilePage extends AbstractPage {
     }
     private ProfilePage fillSelectField(By field, String data) {
         wait.until(ExpectedConditions.elementToBeClickable(field)).click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(selectOptions));
         wait.until(ExpectedConditions.elementToBeClickable(driver
                 .findElement(selectOptions)
                 .findElement(selectOptionsValue(data))))
