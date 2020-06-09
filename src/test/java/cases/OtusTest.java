@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import pages.MainPage;
 
 public class OtusTest extends BaseTest {
+
     @Test
     public void changeInfoTest() {
         MainPage mainPage = new MainPage(driver);

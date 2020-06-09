@@ -18,18 +18,21 @@ public class MainPage extends AbstractPage {
 
     public MainPage open() {
         driver.get(URL);
+        logger.info("main page opened");
         return this;
     }
 
     public LoginPage clickLoginButton() {
         wait.until(ExpectedConditions.elementToBeClickable(loginButton)).click();
+        logger.info("clicked to login button");
         return new LoginPage(driver);
     }
 
     public ProfilePage openPersonalSettings() {
-        assertTrue(this::checkAuth);
+        assertTrue(this::checkAuth, "not authorized");
         driver.findElement(userName).click();
         wait.until(ExpectedConditions.elementToBeClickable(profileLink)).click();
+        logger.info("'my profile' option is selected");
         return new ProfilePage(driver);
     }
 
@@ -37,6 +40,7 @@ public class MainPage extends AbstractPage {
         try {
             return driver.findElement(userName).isDisplayed();
         } catch (NoSuchElementException e) {
+            logger.error("must be authorized!");
             return false;
         }
     }

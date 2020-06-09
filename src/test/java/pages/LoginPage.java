@@ -14,12 +14,15 @@ public class LoginPage extends AbstractPage {
     }
 
     public MainPage authorize() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(email))
-                 .sendKeys(cfg.email());
-        driver.findElement(password)
-                 .sendKeys(cfg.password());
-        driver.findElement(submitButton)
-                 .click();
+        this.fillTextField(email, cfg.email()).fillTextField(password, cfg.password());
+        driver.findElement(submitButton).click();
+        logger.info("login form submitted");
         return new MainPage(driver);
+    }
+
+    private LoginPage fillTextField(By element, String data) {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(element)).clear();
+        driver.findElement(element).sendKeys(data);
+        return this;
     }
 }

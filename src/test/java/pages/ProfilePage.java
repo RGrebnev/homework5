@@ -26,7 +26,8 @@ public class ProfilePage extends AbstractPage {
     }
 
     public void addAllInfo() {
-        assertEquals(driver.getCurrentUrl(), URL);
+        assertEquals(driver.getCurrentUrl(), URL, "must be lk/biography/personal/ page");
+        logger.info("profile page is open");
         this.addPersonalData()
                 .addMainData()
                 .addFirstContact()
@@ -35,7 +36,7 @@ public class ProfilePage extends AbstractPage {
     }
 
     public void checkPersonalInfo() {
-        assertAll("personal info error",
+        assertAll("wrong personal info",
                 () -> assertEquals(cfg.name(), driver.findElement(name).getAttribute("value")),
                 () -> assertEquals(cfg.lastname(), driver.findElement(lastname).getAttribute("value")),
                 () -> assertEquals(cfg.nameLatin(), driver.findElement(nameLatin).getAttribute("value")),
@@ -78,28 +79,39 @@ public class ProfilePage extends AbstractPage {
     private ProfilePage fillTextField(By field, String data) {
         driver.findElement(field).clear();
         driver.findElement(field).sendKeys(data);
+        assertEquals(data, driver.findElement(field).getAttribute("value"));
+        logger.info("{} written in field found {}", data, field.toString());
         return this;
     }
     private ProfilePage fillSelectField(By field, String data) {
-        wait.until(ExpectedConditions.elementToBeClickable(field))
-                .click();
+        wait.until(ExpectedConditions.elementToBeClickable(field)).click();
         wait.until(ExpectedConditions.elementToBeClickable(driver
                 .findElement(selectOptions)
                 .findElement(selectOptionsValue(data))))
                 .click();
+        assertEquals(data, driver.findElement(field).getText());
+        logger.info("{} is selected in field found {}", data, field);
         return this;
     }
     private ProfilePage fillContact(int number, String type, String data) {
-        return this.fillSelectField(contactType(number), type)
+        this.fillSelectField(contactType(number), type)
                 .fillTextField(contactData(number), data);
+        assertAll("error adding contact",
+                () -> assertEquals(type, driver.findElement(contactType(number)).getText()),
+                () -> assertEquals(data, driver.findElement(contactData(number)).getAttribute("value"))
+                );
+        logger.info("contact added. type: {}, data: {}", type, data);
+        return this;
     }
     //buttons
     private ProfilePage clickAddContact() {
         driver.findElement(addContactButton).click();
+        logger.info("'add contact' button clicked");
         return this;
     }
     private ProfilePage clickSave() {
         driver.findElement(saveButton).click();
+        logger.info("'save' button clicked");
         return this;
     }
 

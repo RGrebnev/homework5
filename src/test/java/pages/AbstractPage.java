@@ -18,4 +18,4 @@ public abstract class AbstractPage {
         this.driver = driver;
         wait = new WebDriverWait(driver, 10L);
     }
-}
+ }
