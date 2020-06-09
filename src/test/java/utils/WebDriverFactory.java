@@ -12,7 +12,6 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 
 public class WebDriverFactory {
     private static Logger logger = LogManager.getLogger(WebDriverFactory.class);
-
     // create driver without options
     public static WebDriver createNewDriver(String name) {
         switch (getBrowserName(name)) {
